@@ -10,19 +10,20 @@
     <div class="container">
       <label for="qrtext">Enter Text or URL</label>
       <input type="text" id="qrtext" placeholder="Text or URL" required />
-      <div id="qrcontainer">
-
-      </div>
+      <div id="qrcontainer"></div>
       <button type="button" class="btn" id="qrgenbtn">Generate QR Code</button>
-      <button type="button" class="btn" id="downloadbtn">Download</button>
+      <a href="" class="btn" id="downloadbtn" download="qrcode.jpg"
+        >Download QR</a
+      >
     </div>
-
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
   <script>
     let qrcontainer = document.getElementById("qrcontainer");
     let qrtext = document.getElementById("qrtext");
     let qrgenbtn = document.getElementById("qrgenbtn");
+    let downloadbtn = document.getElementById("downloadbtn");
+    let qrimage;
 
     generateQR = (qrtext) => {
       qrcontainer.innerHTML = "";
@@ -36,13 +37,22 @@
       });
     };
 
-    qrgenbtn.addEventListener("click", (e) =>{
-        let text = qrtext.value
-        if(text.length>0){
-            qrcode = generateQR(text)
-        }
-     
+    downloadqr = () => {
+      qrimage = document.querySelector("#qrcontainer img");
 
+      let imgSrc = qrimage.getAttribute("src");
+      console.log(imgSrc);
+
+      downloadbtn.setAttribute("href", imgSrc);
+    };
+    qrgenbtn.addEventListener("click", (e) => {
+      let text = qrtext.value;
+      if (text.length > 0) {
+        qrcode = generateQR(text);
+        qrcontainer.classList.add("img-show");
+        downloadbtn.classList.add("download-active");
+      }
     });
+    downloadbtn.addEventListener("click", downloadqr);
   </script>
 </html>
